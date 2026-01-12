@@ -112,7 +112,7 @@ It also supports **AI-based search and summary generation** using a RAG (Retriev
 ## ⚙️ Setup Instructions
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.10.6+
 - PostgreSQL
 - OpenRouter API Key
 

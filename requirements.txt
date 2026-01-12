@@ -1,3 +1,4 @@
+bcrypt<4.0.0
 fastapi
 pydantic
 sqlalchemy[asyncio]

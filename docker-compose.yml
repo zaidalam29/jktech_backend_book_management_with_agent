@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./jktech_backend_book_management_with_agent
-    container_name: jktech-backend
+    container_name: jktech-fastapi-container   # <-- same as your manual run
     ports:
       - "8000:8000"
     environment:

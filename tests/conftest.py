@@ -24,8 +24,8 @@ def mock_book():
             self.id = 1
             self.title = "Test Book"
             self.author = "Test Author"
-            self.genre = "Fiction"
-            self.year_published = 2023
+            self.genre = "Science"
+            self.year_published = 2026
             self.summary = "Test summary"
             self.reviews = []
         
@@ -49,8 +49,8 @@ def mock_book():
     mock.id = 1
     mock.title = "Test Book"
     mock.author = "Test Author"
-    mock.genre = "Fiction"
-    mock.year_published = 2023
+    mock.genre = "Science"
+    mock.year_published = 2026
     mock.summary = "Test summary"
     mock.reviews = []
     
@@ -62,8 +62,8 @@ def mock_book():
         'id': 1,
         'title': 'Test Book',
         'author': 'Test Author',
-        'genre': 'Fiction',
-        'year_published': 2023,
+        'genre': 'Science',
+        'year_published': 2026,
         'summary': 'Test summary'
     })
     
@@ -97,15 +97,15 @@ def client(mock_db_session):
                     mock_book_instance.id = 1
                     mock_book_instance.title = "Test"
                     mock_book_instance.author = "Author"
-                    mock_book_instance.genre = "Fiction"
-                    mock_book_instance.year_published = 2023
+                    mock_book_instance.genre = "Science"
+                    mock_book_instance.year_published = 2026
                     mock_book_instance.summary = None
                     mock_book_instance.dict = Mock(return_value={
                         'id': 1,
                         'title': 'Test',
                         'author': 'Author',
-                        'genre': 'Fiction',
-                        'year_published': 2023,
+                        'genre': 'Science',
+                        'year_published': 2026,
                         'summary': None
                     })
                     mock_book_class.return_value = mock_book_instance
@@ -242,8 +242,8 @@ def mock_book():
             self.id = 1
             self.title = "Test Book"
             self.author = "Test Author"
-            self.genre = "Fiction"
-            self.year_published = 2023
+            self.genre = "Science"
+            self.year_published = 2026
             self.summary = "Test summary"
     
     book = SerializableBook()
@@ -260,8 +260,8 @@ def mock_book():
         'id': 1,
         'title': 'Test Book',
         'author': 'Test Author',
-        'genre': 'Fiction',
-        'year_published': 2023,
+        'genre': 'Science',
+        'year_published': 2026,
         'summary': 'Test summary'
     })
     

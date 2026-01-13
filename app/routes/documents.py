@@ -242,7 +242,7 @@ async def generate_document_summary(document_id: int, db: AsyncSession = Depends
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found")
     
     try:
-        from app.llama3 import generate_summary_llama3
+        from app.llm.llama3 import generate_summary_llama3
         
         # Try to read file content for summary if it's a text file
         content = f"Document: {document.filename}\nSize: {document.file_size} bytes\nType: {getattr(document, 'file_type', 'unknown')}"

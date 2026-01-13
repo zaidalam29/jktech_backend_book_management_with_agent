@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Test runner script for the book management system
+Test runner script for the Documents Q&A
 Usage: python run_tests.py
 """
 import subprocess

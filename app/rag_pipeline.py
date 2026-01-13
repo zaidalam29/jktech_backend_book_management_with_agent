@@ -12,7 +12,7 @@ from sqlalchemy import select, func
 from app.models import Book, Review
 
 class RAGPipeline:
-    def __init__(self, persist_path: str = "data/embeddings.pkl"):
+    def __init__(self, persist_path: str = "db/embeddings.pkl"):
         """
         Enhanced RAG Pipeline with persistent storage
         """

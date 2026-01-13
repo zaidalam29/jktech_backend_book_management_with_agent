@@ -74,8 +74,8 @@ async def get_books(db: AsyncSession = Depends(mock_get_db)):
             self.id = 1
             self.title = "Test Book"
             self.author = "Test Author"
-            self.genre = "Fiction"
-            self.year_published = 2023
+            self.genre = "Science"
+            self.year_published = 2026
             self.summary = "Test summary"
     
     return [MockBook()]
@@ -88,8 +88,8 @@ async def get_book_by_id(book_id: int, db: AsyncSession = Depends(mock_get_db)):
                 self.id = 1
                 self.title = "Test Book"
                 self.author = "Test Author"
-                self.genre = "Fiction"
-                self.year_published = 2023
+                self.genre = "Science"
+                self.year_published = 2026
                 self.summary = "Test summary"
         
         return MockBook()
@@ -104,8 +104,8 @@ async def update_book_by_id(book_id: int, book_update: BookUpdate, db: AsyncSess
                 self.id = 1
                 self.title = book_update.title if hasattr(book_update, 'title') else "Updated Book"
                 self.author = "Test Author"
-                self.genre = "Fiction"
-                self.year_published = 2023
+                self.genre = "Science"
+                self.year_published = 2026
                 self.summary = "Test summary"
         
         return MockBook()

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build and run the Book Management System with Docker
+# Build and run the Documents Q&A with Docker
 
 echo "Building Docker image..."
 docker build -t book_management .

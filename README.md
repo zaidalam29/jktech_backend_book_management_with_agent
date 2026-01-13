@@ -1,120 +1,167 @@
-# Book Management System
+# Document Intelligence & QnA Backend
 
-**JkTech Backend** – Book Management System with AI Search (RAG)  
-Developed by **Zaid Alam – Full Stack Developer & Gen AI Engineer**
-
----
-
-## 📌 Project Overview
-
-This is a backend application used to manage **books, users, reviews, and documents**.  
-It also supports **AI-based search and summary generation** using a RAG (Retrieval-Augmented Generation) approach.
-
-📂 **File Storage:** Local Server Storage
+JKTech Internal Backend System  
+Author: **Zaid Alam**  
+Role: *Full Stack Developer & Generative AI Engineer*
 
 ---
 
-## ✨ Main Features
+## Overview
 
-### 📚 Books
-- Add, update, delete, and view books
-- Generate AI summaries for books
-- Get book recommendations
+This backend service is designed to manage **books, documents, users, and reviews** while providing **AI-powered search and summarization** capabilities.
 
-### ✍️ Reviews
-- Users can add reviews with ratings
-- View all reviews of a book
-- Generate review summary
-
-### 🔍 AI Search (RAG)
-- Search books using natural language
-- Semantic search using embeddings
-- Automatic reindexing when data changes
-
-### 👥 Users & Roles
-- JWT-based login and signup
-- Admin and User roles
-- Admin can manage users and roles
-
-### 📄 Documents
-- Upload documents
-- Download documents
-- Delete documents
-- All files stored locally
+The system follows a **Retrieval-Augmented Generation (RAG)** approach to deliver context-aware responses from stored content.  
+All documents and assets are stored on the **local server** and indexed for semantic search.
 
 ---
 
-## 🔗 API Routes
+## Core Modules
 
-### 🔐 Authentication Routes
-| Method | Route | Description |
-|------|------|-------------|
-| POST | /auth/signup | User registration |
-| POST | /auth/login | User login |
-| POST | /auth/logout | User logout |
-| POST | /auth/create-admin | Create admin user |
+### Book Management
+- Create, update, view, and delete books
+- Generate automated AI summaries
+- Recommend related books based on content similarity
 
----
+### Review Management
+- Submit reviews with ratings
+- Retrieve book-specific reviews
+- Generate summarized feedback using AI
 
-### 📚 Book Routes
-| Method | Route | Description |
-|------|------|-------------|
-| POST | /books | Create a new book |
-| GET | /books | Get all books |
-| GET | /books/{id} | Get book by ID |
-| PUT | /books/{id} | Update book |
-| DELETE | /books/{id} | Delete book |
-| POST | /books/{id}/generate-summary | Generate AI summary |
-| POST | /books/{id}/reindex | Reindex book |
+### Intelligent Search (RAG)
+- Natural language query support
+- Semantic search powered by vector embeddings
+- Automatic reindexing on data updates
 
----
+### User Access Control
+- JWT-based authentication
+- Role-based authorization
+- Administrative user and role management
 
-### ✍️ Review Routes
-| Method | Route | Description |
-|------|------|-------------|
-| POST | /books/{id}/reviews | Add review |
-| GET | /books/{id}/reviews | Get reviews |
-| GET | /books/{id}/summary | Review summary |
+### Document Handling
+- Upload documents for processing
+- Download stored files
+- Remove documents when required
+- Local file system storage
 
 ---
 
-### 🔍 Search Routes
-| Method | Route | Description |
-|------|------|-------------|
-| GET / POST | /search | Semantic search |
-| POST | /reindex-all | Reindex all books |
-| GET | /debug/embeddings | Debug embeddings |
+## API Routes
+
+### Authentication
+
+**POST /auth/signup**  
+Registers a new user in the system.
+
+**POST /auth/login**  
+Authenticates a user and issues a JWT token.
+
+**POST /auth/logout**  
+Terminates the current user session.
+
+**POST /auth/create-admin**  
+Creates an administrator account.
 
 ---
 
-### 👮 Admin Routes (Admin Only)
-| Method | Route | Description |
-|------|------|-------------|
-| POST | /admin/users | Create user |
-| GET | /admin/users | List users |
-| PUT | /admin/users/{id} | Update user |
-| DELETE | /admin/users/{id} | Delete user |
-| GET | /admin/users/roles | List roles |
-| POST | /admin/users/roles | Create role |
+### Books
+
+**POST /books**  
+Creates a new book entry.
+
+**GET /books**  
+Returns all available books.
+
+**GET /books/{id}**  
+Fetches details of a specific book.
+
+**PUT /books/{id}**  
+Updates an existing book record.
+
+**DELETE /books/{id}**  
+Deletes a book from the system.
+
+**POST /books/{id}/generate-summary**  
+Generates an AI-based summary for the selected book.
+
+**POST /books/{id}/reindex**  
+Rebuilds the search index for the book.
 
 ---
 
-### 📄 Document Routes
-| Method | Route | Description |
-|------|------|-------------|
-| POST | /documents/upload | Upload document |
-| GET | /documents | List documents |
-| GET | /documents/{id}/download | Download document |
-| DELETE | /documents/{id} | Delete document |
+### Reviews
+
+**POST /books/{id}/reviews**  
+Adds a review and rating for a book.
+
+**GET /books/{id}/reviews**  
+Retrieves all reviews linked to the book.
+
+**GET /books/{id}/summary**  
+Generates a summarized overview of reviews using AI.
 
 ---
 
-## ⚙️ Setup Instructions
+### Search & Indexing
 
-### Prerequisites
-- Python 3.10.6+
-- PostgreSQL
-- OpenRouter API Key
+**GET /search**  
+Executes a semantic search using query parameters.
+
+**POST /search**  
+Executes a semantic search using request body input.
+
+**POST /reindex-all**  
+Reindexes all books and documents.
+
+**GET /debug/embeddings**  
+Provides embedding data for debugging purposes.
+
+---
+
+### Administration (Restricted)
+
+**POST /admin/users**  
+Creates a new user.
+
+**GET /admin/users**  
+Lists all users.
+
+**PUT /admin/users/{id}**  
+Updates user information.
+
+**DELETE /admin/users/{id}**  
+Deletes a user.
+
+**GET /admin/users/roles**  
+Returns available roles.
+
+**POST /admin/users/roles**  
+Creates a new role.
+
+---
+
+### Documents
+
+**POST /documents/upload**  
+Uploads a document for storage and indexing.
+
+**GET /documents**  
+Lists all uploaded documents.
+
+**GET /documents/{id}/download**  
+Downloads a document by ID.
+
+**DELETE /documents/{id}**  
+Deletes a document from the system.
+
+---
+
+## Project Setup Guide
+
+### System Requirements
+
+- Python 3.10 or higher
+- PostgreSQL database
+- OpenRouter API key
 
 ---
 
@@ -124,6 +171,7 @@ It also supports **AI-based search and summary generation** using a RAG (Retriev
 git clone <repository-url>
 cd jktech_backend_book_management_with_agent
 pip install -r requirements.txt
+
 ```
 
 ### Environment (.env)
@@ -131,11 +179,11 @@ pip install -r requirements.txt
 ```env
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=book_management
+DB_NAME=jktech_document_agent
 DB_USER=postgres
 DB_PASSWORD=your_password
 
-OPENROUTER_API_KEY=your_api_key
+LLM_KEY=your_api_key
 ```
 
 ### Run Server
@@ -146,7 +194,7 @@ uvicorn app.main:app --reload
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 pytest tests/ -v
@@ -154,14 +202,14 @@ pytest tests/ -v
 
 ---
 
-## 📘 API Documentation
+## API Documentation
 
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 
 ---
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 - FastAPI
 - PostgreSQL
@@ -172,7 +220,4 @@ pytest tests/ -v
 
 ---
 
-## 📄 License
-
-MIT License © 2026  
 **Zaid Alam – Full Stack Developer & Gen AI Engineer**

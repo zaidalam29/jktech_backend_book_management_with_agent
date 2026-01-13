@@ -4,21 +4,21 @@ from urllib.parse import quote_plus
 
 class Settings(BaseSettings):
     # App
-    APP_NAME: str = "Book Management System For JkTech"
+    APP_NAME: str = "Documents Q&A For JkTech"
     APP_ENV: str = "development"
     DEBUG: bool = True
     USE_S3: bool = False 
     
-    # Database
+    # DB
     DB_HOST: str
     DB_PORT: int = 5432
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
     
-    # OpenRouter
-    OPENROUTER_API_KEY: str
-    OPENROUTER_MODEL: str = "meta-llama/llama-3-8b-instruct"
+    # LLM OPENROUTER
+    LLM_KEY: str
+    LLM_MODEL: str = "meta-llama/llama-3-8b-instruct"
     
     # Security
     BASIC_AUTH_USERNAME: str = "admin"
@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     
     # Local Storage
     UPLOAD_DIR: str = "uploads"
-    MAX_UPLOAD_SIZE: int = 50 * 1024 * 1024  # 50MB
+    MAX_UPLOAD_SIZE: int = 50 * 1024 * 1024
     ALLOWED_EXTENSIONS: list = [".pdf", ".txt", ".doc", ".docx", ".md", ".json"]
     
     AWS_REGION: str = "us-east-1"

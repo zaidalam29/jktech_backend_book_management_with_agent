@@ -10,7 +10,7 @@ async def generate_summary(content: str):
         response = await client.post(  # Make POST request to OpenRouter API
             "https://openrouter.ai/api/v1/chat/completions",  # OpenRouter API endpoint
             headers={  # Request headers
-                "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",  # API key for authentication
+                "Authorization": f"Bearer {settings.LLM_KEY}",  # API key for authentication
                 "Content-Type": "application/json",  # Specify JSON content type
             },
             json={  # Request body in JSON format
@@ -35,11 +35,11 @@ async def generate_summary_llama3(prompt: str) -> str:
         resp = await client.post(  # Make POST request
             "https://openrouter.ai/api/v1/chat/completions",  # Same API endpoint
             headers={  # Request headers
-                "Authorization": f"Bearer {settings.OPENROUTER_API_KEY}",  # API key from settings
+                "Authorization": f"Bearer {settings.LLM_KEY}",  # API key from settings
                 "Content-Type": "application/json",  # JSON content type
             },
             json={  # Request body
-                "model": settings.OPENROUTER_MODEL,  # Model name from settings (more flexible)
+                "model": settings.LLM_MODEL,  # Model name from settings (more flexible)
                 "messages": [  # Messages array
                     {"role": "system", "content": "You are a helpful assistant that summarizes books."},  # System message to set AI behavior
                     {"role": "user", "content": prompt},  # User prompt (can be more customized)

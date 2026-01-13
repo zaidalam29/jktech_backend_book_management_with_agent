@@ -238,6 +238,58 @@ After the container is running, the FastAPI application can be accessed in the b
 http://localhost:8000
 
 ```
+
+## Retrieval-Augmented Generation (RAG) Implementation
+
+This project integrates a Retrieval-Augmented Generation (RAG) workflow to deliver accurate and context-aware AI responses from stored content.
+
+---
+
+### Text Embedding Generation
+
+All books, reviews, and documents are converted into numerical vectors using a transformer-based language model.  
+These embeddings capture the semantic meaning of the text rather than relying on keyword matching.
+
+A lightweight sentence-level embedding model is used to balance performance and accuracy.
+
+---
+
+### Vector Storage
+
+Generated embeddings are stored in memory during runtime.  
+This allows fast access and comparison without relying on an external vector database.
+
+---
+
+### Content Indexing
+
+Whenever a book or review is added, updated, or removed, the system automatically regenerates embeddings.  
+This ensures that search results always reflect the most recent data.
+
+---
+
+### Semantic Retrieval
+
+When a user submits a search query or question, the query is transformed into an embedding.  
+The system then compares this vector against stored embeddings using cosine similarity to identify the most relevant content.
+
+---
+
+### AI Response Generation
+
+The retrieved context is passed to the language model, which generates a response grounded in the actual stored data.  
+This approach reduces hallucinations and improves answer relevance.
+
+---
+
+### Summary
+
+The RAG pipeline enables:
+- Meaning-based search instead of keyword matching
+- Automatic content synchronization through reindexing
+- Fast and accurate retrieval using vector similarity
+- Reliable AI-generated answers backed by real data
+---
 ## API Documentation
 
 - Swagger UI: http://localhost:8000/docs

@@ -1,5 +1,5 @@
 import pytest
-from tests.test_app import test_client
+from tests.run_app_test import test_client
 from fastapi.testclient import TestClient
 
 class TestBooks:

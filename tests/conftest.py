@@ -1,4 +1,5 @@
 import pytest
+import pytest_asyncio  # Add this import
 import asyncio
 from fastapi.testclient import TestClient
 from unittest.mock import AsyncMock, MagicMock, patch, Mock
@@ -9,11 +10,76 @@ from app.database import get_db
 from app.models import User, Role, Book, Review, Document
 from app.security import hash_password, create_access_token
 import os
+from types import SimpleNamespace
 
 # Set testing environment
 os.environ["TESTING"] = "true"
 
-# ==================== FIXED MOCK BOOK ====================
+# ==================== MOCK DB SESSION (ONE DEFINITION ONLY) ====================
+
+@pytest_asyncio.fixture  # Change to pytest_asyncio.fixture
+async def mock_db_session():
+    """Create a mock database session"""
+    session = AsyncMock(spec=AsyncSession)
+    
+    # Mock execute method
+    mock_result = MagicMock()
+    mock_scalars = MagicMock()
+    mock_scalars.all.return_value = []
+    mock_result.scalars.return_value = mock_scalars
+    mock_result.scalar_one_or_none.return_value = None
+    session.execute.return_value = mock_result
+    
+    # Mock async methods properly
+    session.commit = AsyncMock()
+    session.flush = AsyncMock()
+    session.refresh = AsyncMock()
+    session.delete = AsyncMock()
+    session.add = Mock()
+    session.close = AsyncMock()
+    
+    # Additional async methods
+    session.begin = AsyncMock()
+    session.begin_nested = AsyncMock()
+    
+    # Return the session
+    yield session
+
+# ==================== SAMPLE BOOK FIXTURE ====================
+
+@pytest.fixture
+def sample_book():
+    """Create a sample book for testing"""
+    book = Book(
+        id=1,
+        title="Clean Code",
+        author="Robert C. Martin",
+        genre="Science",
+        year_published=2026
+    )
+    # Add summary attribute
+    book.summary = None
+    # Add reviews attribute
+    book.reviews = []
+    
+    # Add dict method for Pydantic serialization
+    def to_dict():
+        return {
+            'id': book.id,
+            'title': book.title,
+            'author': book.author,
+            'genre': book.genre,
+            'year_published': book.year_published,
+            'summary': book.summary,
+            'reviews': book.reviews
+        }
+    
+    book.dict = to_dict
+    book.model_dump = to_dict
+    
+    return book
+
+# ==================== FIXED MOCK BOOK (KEEP THIS FOR SYNC TESTS) ====================
 
 @pytest.fixture
 def mock_book():
@@ -73,46 +139,20 @@ def mock_book():
 
 @pytest.fixture
 def client(mock_db_session):
-    """Create test client with properly mocked authentication"""
-    
     def override_get_db():
         yield mock_db_session
-    
+
     app.dependency_overrides[get_db] = override_get_db
-    
-    # IMPORTANT: Mock verify_user dependency at the route level
-    # We need to patch it in the right place
-    
-    # Mock all external dependencies
+
     with patch('app.main.rag_pipeline') as mock_rag:
         mock_rag.index_book = AsyncMock()
         mock_rag.search_similar_books = Mock(return_value=[])
-        
+
         with patch('app.main.generate_summary_llama3', AsyncMock(return_value="Generated summary")):
             with patch('app.main.generate_summary', AsyncMock(return_value="Review summary")):
-                # Also mock the Book model creation
-                with patch('app.models.Book') as mock_book_class:
-                    # Make Book() return our mock
-                    mock_book_instance = MagicMock()
-                    mock_book_instance.id = 1
-                    mock_book_instance.title = "Test"
-                    mock_book_instance.author = "Author"
-                    mock_book_instance.genre = "Science"
-                    mock_book_instance.year_published = 2026
-                    mock_book_instance.summary = None
-                    mock_book_instance.dict = Mock(return_value={
-                        'id': 1,
-                        'title': 'Test',
-                        'author': 'Author',
-                        'genre': 'Science',
-                        'year_published': 2026,
-                        'summary': None
-                    })
-                    mock_book_class.return_value = mock_book_instance
-                    
-                    with TestClient(app) as test_client:
-                        yield test_client
-    
+                with TestClient(app) as test_client:
+                    yield test_client
+
     app.dependency_overrides.clear()
 
 # ==================== AUTH HEADERS FIX ====================
@@ -124,26 +164,7 @@ def auth_headers():
     token = create_access_token({"sub": "testuser", "roles": ["user"]})
     return {"Authorization": f"Bearer {token}"}
 
-# ==================== OTHER FIXTURES (unchanged) ====================
-
-@pytest.fixture
-def mock_db_session():
-    """Create a mock database session"""
-    session = AsyncMock(spec=AsyncSession)
-    
-    # Mock execute method
-    mock_result = MagicMock()
-    session.execute.return_value = mock_result
-    
-    # Mock other methods
-    session.commit = AsyncMock()
-    session.flush = AsyncMock()
-    session.refresh = AsyncMock()
-    session.delete = AsyncMock()
-    session.add = Mock()
-    session.close = AsyncMock()
-    
-    return session
+# ==================== OTHER FIXTURES ====================
 
 @pytest.fixture
 def mock_user():
@@ -175,9 +196,10 @@ def admin_token():
     """Create admin JWT token"""
     return create_access_token({"sub": "admin", "roles": ["admin"]})
 
-
 def create_mock_verify_user(should_succeed=True):
     """Create a mock verify_user function"""
+    from fastapi import HTTPException
+    
     def mock_verify():
         if should_succeed:
             return "testuser"
@@ -185,92 +207,13 @@ def create_mock_verify_user(should_succeed=True):
             raise HTTPException(status_code=401, detail="Invalid authentication credentials")
     return mock_verify
 
-# ==================== FIXTURES ====================
-
 @pytest.fixture
-def mock_db_session():
-    """Mock database session"""
-    session = AsyncMock(spec=AsyncSession)
-    
-    # Setup default return values
-    mock_result = MagicMock()
-    mock_scalars = MagicMock()
-    mock_scalars.all.return_value = []
-    mock_result.scalars.return_value = mock_scalars
-    mock_result.scalar_one_or_none.return_value = None
-    
-    session.execute.return_value = mock_result
-    session.commit = AsyncMock()
-    session.flush = AsyncMock()
-    session.refresh = AsyncMock()
-    session.delete = AsyncMock()
-    session.add = Mock()
-    
-    return session
-
-@pytest.fixture
-def client(mock_db_session):
-    """Test client with proper mocking"""
-    
-    def override_get_db():
-        yield mock_db_session
-    
-    # Override database
-    app.dependency_overrides[get_db] = override_get_db
-    
-    # Mock verify_user globally
-    with patch('app.main.verify_user', new_callable=lambda: create_mock_verify_user(True)):
-        # Mock external services
-        with patch('app.main.rag_pipeline') as mock_rag:
-            mock_rag.index_book = AsyncMock()
-            mock_rag.search_similar_books = Mock(return_value=[])
-            
-            with patch('app.main.generate_summary_llama3', AsyncMock(return_value="Mock summary")):
-                with patch('app.main.generate_summary', AsyncMock(return_value="Review summary")):
-                    with TestClient(app) as test_client:
-                        yield test_client
-    
-    # Cleanup
-    app.dependency_overrides.clear()
-
-@pytest.fixture
-def mock_book():
-    """Create a serializable mock book"""
-    # Simple class that will serialize correctly
-    class SerializableBook:
-        def __init__(self):
-            self.id = 1
-            self.title = "Test Book"
-            self.author = "Test Author"
-            self.genre = "Science"
-            self.year_published = 2026
-            self.summary = "Test summary"
-    
-    book = SerializableBook()
-    
-    # Create a MagicMock that wraps the serializable object
-    mock = MagicMock(spec=Book)
-    
-    # Transfer all attributes
-    for attr in ['id', 'title', 'author', 'genre', 'year_published', 'summary']:
-        setattr(mock, attr, getattr(book, attr))
-    
-    # Add dict method for Pydantic
-    mock.dict = Mock(return_value={
-        'id': 1,
-        'title': 'Test Book',
-        'author': 'Test Author',
-        'genre': 'Science',
-        'year_published': 2026,
-        'summary': 'Test summary'
-    })
-    
-    return mock
-
-@pytest.fixture
-def auth_headers():
-    """Auth headers"""
-    return {"Authorization": "Bearer test_token"}
+def mock_db():
+    """
+    Mock database session for testing
+    """
+    db = MagicMock()
+    return db
 
 # ==================== TEST SETUP HELPERS ====================
 
@@ -295,3 +238,4 @@ def setup_book_not_found(mock_db_session):
     mock_result.scalars.return_value.all.return_value = []
     mock_db_session.execute.return_value = mock_result
     return mock_db_session
+

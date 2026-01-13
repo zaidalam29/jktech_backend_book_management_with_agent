@@ -202,6 +202,42 @@ pytest tests/ -v
 
 ---
 
+## Docker
+
+Docker is used in this project to run the FastAPI backend inside a container using **Docker Desktop on Windows**.
+
+---
+
+### Step 1: Create Dockerfile
+
+A `Dockerfile` is created in the root of the project to define how the FastAPI application should run inside a container.
+
+The Dockerfile uses Python 3.11, installs required dependencies, copies the project code, and starts the server using Uvicorn.
+
+---
+
+### Step 2: Build Docker Image
+
+After creating the Dockerfile, the Docker image is built using the following command:
+
+```bash
+docker build -t fastapi-backend .
+```
+### Step 3: Run Docker Container
+
+Once the image is built, the container is started using:
+```bash
+docker run -p 8000:8000 fastapi-backend
+
+```
+
+### Step 4: Access the Application
+
+After the container is running, the FastAPI application can be accessed in the browser or via API tools at:
+```bash
+http://localhost:8000
+
+```
 ## API Documentation
 
 - Swagger UI: http://localhost:8000/docs

@@ -421,27 +421,46 @@ Path:
 ```
 
 ```yaml
-name: CI - Docker Build
+name: FastAPI Docker CI/CD
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      
+      - name: Checkout source code
         uses: actions/checkout@v4
 
-      - name: Set up Docker
-        uses: docker/setup-buildx-action@v3
+     
+      - name: Check Docker version
+        run: docker --version
 
-      - name: Build Docker Image
-        run: docker build -t fastapi-app .
+      - name: Deploy to Server using SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "Connected to server"
+
+            cd /var/www/jktech_backend_book_management_with_agent
+
+            echo "Pulling latest code"
+            git pull origin main
+
+            echo "Stopping old containers"
+            docker-compose down
+
+            echo "Building & starting containers"
+            docker-compose up --build -d
+
+            echo "Deployment completed"
+
 ```
 
 ---

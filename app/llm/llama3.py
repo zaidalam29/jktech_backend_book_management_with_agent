@@ -1,5 +1,5 @@
 import httpx  # Async HTTP client library for making API requests
-from app.config import settings  # Import settings from config module
+from app.core.config import settings  # Import settings from config module
 
 async def generate_summary(content: str):
     """

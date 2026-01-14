@@ -11,7 +11,7 @@ from app.schemas import ReviewCreate, ReviewResponse, GenerateSummaryRequest, Ge
 from typing import List, Dict, Any, Optional  
 from app.routes import auth, users, documents, ingestion
 from fastapi.middleware.cors import CORSMiddleware
-from app.rag_pipeline import rag_pipeline
+from app.retriever_pipeline import rag_pipeline
 import traceback
 
 app = FastAPI(title="Documents Q&A For JkTech")

@@ -6,7 +6,7 @@ from sqlalchemy.future import select
 from app.database import get_db
 from app.models import Document
 from app.auth import verify_user
-from app.config import settings
+from app.core.config import settings
 from app.utils.local_storage import local_storage
 import io
 import os

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker
 )
 from sqlalchemy.orm import sessionmaker, declarative_base
-from app.config import settings
+from app.core.config import settings
 
 # -------------------------------------------------
 # Base class for all SQLAlchemy models

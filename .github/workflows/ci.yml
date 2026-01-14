@@ -2,8 +2,6 @@ name: FastAPI Docker CI/CD
 
 on:
   push:
-    branches:
-      - main  
 
 jobs:
   deploy:

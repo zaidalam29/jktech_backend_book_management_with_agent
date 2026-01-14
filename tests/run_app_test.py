@@ -43,8 +43,8 @@ def mock_verify_user_fail():
     raise HTTPException(status_code=401, detail="Invalid authentication credentials")
 
 # Import schemas
-from app.schemas import BookCreate, BookResponse, BookUpdate
-from app.schemas import ReviewCreate, ReviewResponse
+from app.database.schemas import BookCreate, BookResponse, BookUpdate
+from app.database.schemas import ReviewCreate, ReviewResponse
 
 # ==================== TEST ROUTES ====================
 

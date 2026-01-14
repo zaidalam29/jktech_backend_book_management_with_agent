@@ -1,7 +1,7 @@
 # recreate_db.py
 import asyncio
-from app.database import Base, engine
-from app.models import Document, User, Book
+from app.database.database import Base, engine
+from app.database.models import Document, User, Book
 
 async def recreate_database():
     async with engine.begin() as conn:

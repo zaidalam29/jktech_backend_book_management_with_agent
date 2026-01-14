@@ -3,9 +3,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from app.database import get_db
-from app.models import User, Role
-from app.security import hash_password, verify_password, create_access_token
+from app.database.database import get_db
+from app.database.models import User, Role
+from app.core.security import hash_password, verify_password, create_access_token
 from pydantic import BaseModel
 import os
 

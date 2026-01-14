@@ -6,9 +6,9 @@ from unittest.mock import AsyncMock, MagicMock, patch, Mock
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.main import app
-from app.database import get_db
-from app.models import User, Role, Book, Review, Document
-from app.security import hash_password, create_access_token
+from app.database.database import get_db
+from app.database.models import User, Role, Book, Review, Document
+from app.core.security import hash_password, create_access_token
 import os
 from types import SimpleNamespace
 

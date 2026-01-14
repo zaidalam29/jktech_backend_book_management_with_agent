@@ -1,5 +1,5 @@
 from sqlalchemy.future import select
-from app.models import Book, Review
+from app.database.models import Book, Review
 
 async def create_book(db, book):
     db.add(book)

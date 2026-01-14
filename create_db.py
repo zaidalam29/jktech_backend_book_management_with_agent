@@ -7,11 +7,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 async def create_tables():
 
-    from app import models
-    from app.database import engine, Base
+    from app.database import models
+    from app.database.database import engine, Base
     
     print("Creating database tables...")
-    print(f"📊 Models to create: {list(Base.metadata.tables.keys())}")
+    print(f"Models to create: {list(Base.metadata.tables.keys())}")
     
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

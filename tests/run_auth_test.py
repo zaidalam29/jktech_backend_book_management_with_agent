@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import AsyncMock, MagicMock, patch
-from app.security import hash_password, verify_password
+from app.core.security import hash_password, verify_password
 
 class TestAuth:
     def test_signup(self, client: TestClient, mock_db_session):

@@ -9,7 +9,7 @@ from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
-from app.models import Book, Review
+from app.database.models import Book, Review
 
 class RAGPipeline:
     def __init__(self, persist_path: str = "db/embeddings.pkl"):

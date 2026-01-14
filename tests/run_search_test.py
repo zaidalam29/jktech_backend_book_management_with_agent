@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock, AsyncMock
-from app.models import Book, Review
+from app.database.models import Book, Review
 from datetime import datetime
 import asyncio
 

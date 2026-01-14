@@ -5,7 +5,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 async def debug_password_hashing():
-    from app.security import hash_password, verify_password
+    from app.core.security import hash_password, verify_password
     
     print("🧪 Testing password hashing...")
     
@@ -26,7 +26,7 @@ async def debug_password_hashing():
     
     # Test 2: Check database directly
     print(f"\n📊 Checking database...")
-    from app.database import engine
+    from app.database.database import engine
     from sqlalchemy import text
     
     async with engine.connect() as conn:

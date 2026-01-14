@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from app.database import get_db
-from app.models import User, Role, user_roles
-from app.auth import verify_admin
-from app.security import hash_password
+from app.database.database import get_db
+from app.database.models import User, Role, user_roles
+from app.core.auth import verify_admin
+from app.core.security import hash_password
 from pydantic import BaseModel
 from typing import List
 

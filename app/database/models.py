@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
 # ✅ CORRECT: Import Base from database ONLY
-from app.database import Base
+from app.database.database import Base
 
 # ✅ Define association table using the imported Base
 user_roles = Table(

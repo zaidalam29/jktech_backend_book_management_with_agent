@@ -12,9 +12,9 @@ sys.path.insert(0, parent_dir)
 
 async def init_db():
     # Now use relative import
-    from app import models
+    from app.database import models
     
-    from app.database import engine, Base
+    from app.database.database import engine, Base
     
     print("🔄 Creating database tables...")
     print(f"📊 Models registered: {list(Base.metadata.tables.keys())}")

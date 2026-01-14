@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import get_db
-from app.models import Book
+from app.database.database import get_db
+from app.database.models import Book
 from sqlalchemy.future import select
 
 async def recommend_books(db, genre: str):

@@ -1,17 +1,17 @@
 from fastapi import FastAPI, Depends, HTTPException, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.database import get_db
-from app.models import Book, Review
+from app.database.database import get_db
+from app.database.models import Book, Review
 from app.llm.llama3 import generate_summary, generate_summary_llama3
-from app.auth import verify_user
-from app.recommendations import recommend_books
-from app.schemas import BookCreate, BookResponse, BookUpdate
-from app.schemas import ReviewCreate, ReviewResponse, GenerateSummaryRequest, GenerateSummaryResponse
+from app.core.auth import verify_user
+from app.services.recommendations import recommend_books
+from app.database.schemas import BookCreate, BookResponse, BookUpdate
+from app.database.schemas import ReviewCreate, ReviewResponse, GenerateSummaryRequest, GenerateSummaryResponse
 from typing import List, Dict, Any, Optional  
 from app.routes import auth, users, documents, ingestion
 from fastapi.middleware.cors import CORSMiddleware
-from app.retriever_pipeline import rag_pipeline
+from app.services.retriever_pipeline import rag_pipeline
 import traceback
 
 app = FastAPI(title="Documents Q&A For JkTech")

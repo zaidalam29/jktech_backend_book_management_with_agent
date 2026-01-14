@@ -3,9 +3,9 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, status
 from fastapi.responses import StreamingResponse, FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.database import get_db
-from app.models import Document
-from app.auth import verify_user
+from app.database.database import get_db
+from app.database.models import Document
+from app.core.auth import verify_user
 from app.core.config import settings
 from app.utils.local_storage import local_storage
 import io

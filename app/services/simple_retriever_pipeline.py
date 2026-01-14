@@ -4,7 +4,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from typing import List, Dict, Any
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.models import Book, Review
+from app.database.models import Book, Review
 
 class SimpleRAGPipeline:
     def __init__(self):

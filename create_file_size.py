@@ -1,6 +1,6 @@
 import asyncio
 import asyncpg
-from app.config.config import settings
+from app.core.config import settings
 
 async def add_file_size_column():
     conn = await asyncpg.connect(settings.DATABASE_URL.replace("+asyncpg", ""))

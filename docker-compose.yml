@@ -2,31 +2,25 @@ version: '3.8'
 
 services:
   backend:
-    build:
-      context: ./jktech_backend_book_management_with_agent
-    container_name: jktech-fastapi-container   # <-- same as your manual run
+    build: .
+    container_name: jktech-fastapi-container
     ports:
       - "8000:8000"
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=book_management
-      - DB_USER=postgres
-      - DB_PASSWORD=password
-      - USE_S3=false
+    env_file:
+      - .env
     depends_on:
       - db
-    volumes:
-      - ./jktech_backend_book_management_with_agent/.env:/app/.env
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
   db:
     image: postgres:15
     container_name: jktech-postgres
+    env_file:
+      - .env
     environment:
-      - POSTGRES_DB=book_management
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:

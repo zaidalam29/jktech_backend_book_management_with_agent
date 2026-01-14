@@ -13,6 +13,7 @@ from app.routes import auth, users, documents, ingestion
 from fastapi.middleware.cors import CORSMiddleware
 from app.services.retriever_pipeline import rag_pipeline
 import traceback
+from app.database.init_db import init_db
 
 app = FastAPI(title="Documents Q&A For JkTech")
 
@@ -837,6 +838,9 @@ async def debug_embeddings():
         
         
 # >>>>>>>>>>>>>>>> ROOT ENDPOINT >>>>>>>>>>>>>>>>
+@app.on_event("startup")
+async def on_startup():
+    await init_db()
 
 @app.get("/")
 async def root():

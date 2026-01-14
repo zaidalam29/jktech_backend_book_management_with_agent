@@ -202,43 +202,6 @@ pytest tests/ -v
 
 ---
 
-## Docker
-
-Docker is used in this project to run the FastAPI backend inside a container using **Docker Desktop on Windows**.
-
----
-
-### Step 1: Create Dockerfile
-
-A `Dockerfile` is created in the root of the project to define how the FastAPI application should run inside a container.
-
-The Dockerfile uses Python 3.11, installs required dependencies, copies the project code, and starts the server using Uvicorn.
-
----
-
-### Step 2: Build Docker Image
-
-After creating the Dockerfile, the Docker image is built using the following command:
-
-```bash
-docker build -t fastapi-backend .
-```
-### Step 3: Run Docker Container
-
-Once the image is built, the container is started using:
-```bash
-docker run -p 8000:8000 fastapi-backend
-
-```
-
-### Step 4: Access the Application
-
-After the container is running, the FastAPI application can be accessed in the browser or via API tools at:
-```bash
-http://localhost:8000
-
-```
-
 ## Retrieval-Augmented Generation (RAG) Implementation
 
 This project integrates a Retrieval-Augmented Generation (RAG) workflow to deliver accurate and context-aware AI responses from stored content.
@@ -307,5 +270,256 @@ The RAG pipeline enables:
 - Pytest
 
 ---
+
+# Docker & CI/CD
+
+### Run Project using Docker (Step by Step)
+ 
+This project uses  **Python FastAPI** with **PostgreSQL** and runs fully using **Docker**.  
+Follow the steps below to run the project on your system.
+
+---
+
+## Step 1: Install Required Software
+
+Make sure these are installed on your system:
+
+- Docker Desktop  
+- Git (optional)
+
+---
+
+## Step 2: Go to Project Folder
+
+Open terminal / command prompt and go to project directory:
+
+```bash
+cd jktech_backend_book_management_with_agent
+```
+
+---
+
+## Step 3: Create `.env` File
+
+Create a file named **`.env`** in the project root folder.
+
+### `.env` Example
+
+```env
+APP_ENV=development
+DEBUG=true
+
+DB_HOST=db
+DB_PORT=5432
+DB_NAME=book_management
+DB_USER=postgres
+DB_PASSWORD=password
+
+LLM_KEY=your_openrouter_api_key
+USE_S3=false
+```
+
+---
+
+## Step 4: PostgreSQL Runs Automatically
+
+You do NOT need to install PostgreSQL manually.
+
+Docker will:
+- Create PostgreSQL container
+- Create database automatically
+- Save data using Docker volume
+
+---
+
+## Step 5: Stop Old Containers (If Any)
+
+```bash
+docker-compose down -v
+```
+
+---
+
+## Step 6: Build and Start Project
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## Step 7: Open Application
+
+- http://localhost:8000  
+- http://localhost:8000/docs
+
+---
+
+## Stop Project
+
+```bash
+docker-compose down
+```
+
+---
+
+# CI/CD Setup (GitHub Actions) – Step by Step Guide
+
+---
+
+## Current Status
+
+- Dockerized App: Done
+
+- PostgreSQL via Docker: Done
+
+- GitHub Actions (CI): Enabled
+
+- Auto Deploy (CD): Requires Server
+
+- SSH Keys Ready: Yes (PEM available)
+
+---
+
+## CI vs CD 
+
+### CI – Continuous Integration
+- Runs automatically on **every push**
+- Builds Docker image
+- Ensures project is buildable
+
+### CD – Continuous Deployment
+- Requires a **server (EC2 / VPS)**
+- Uses **SSH (PEM key)**
+- Deploys updated containers
+
+---
+
+## Step 1: Project Structure
+
+Make sure your project contains:
+
+```
+.
+├── app/
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+└── README.md
+```
+
+---
+
+## Step 2: GitHub Actions – CI Workflow
+
+Path:
+```
+.github/workflows/ci.yml
+```
+
+```yaml
+name: CI - Docker Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker Image
+        run: docker build -t fastapi-app .
+```
+
+---
+
+## 🛠 Step 3: Push Code to GitHub
+
+```bash
+git add .
+git commit -m "Enable CI with GitHub Actions"
+git push origin main
+```
+
+Go to **GitHub → Actions Tab**  
+You will see workflow **running successfully** 
+
+---
+
+## Step 4: SSH Keys
+
+- PEM file
+- Server (Required)
+
+SSH keys authenticate to a server  
+Keys **do not replace** a server
+
+---
+
+## Step 5: Enable CD (When Server is Available)
+
+Once you have an EC2 / VPS:
+
+### Add GitHub Secrets:
+
+When you enable deployment, add these secrets in GitHub:
+
+- SERVER_IP
+Server public IP address
+
+- SERVER_USER
+Example: ubuntu
+
+- SSH_PRIVATE_KEY
+Content of your PEM file
+
+---
+
+## Example CD Job 
+
+```yaml
+- name: Deploy to Server
+  uses: appleboy/ssh-action@v1.0.0
+  with:
+    host: ${{ secrets.SERVER_IP }}
+    username: ${{ secrets.SERVER_USER }}
+    key: ${{ secrets.SSH_PRIVATE_KEY }}
+    script: |
+      cd /var/www/app
+      git pull
+      docker-compose up -d --build
+```
+
+This step is **disabled until server exists**
+
+---
+
+### Summary
+
+- CI: Active
+
+- CD: Pending (server required)
+
+- Docker: Configured
+
+- PostgreSQL: Connected via Docker
+
+- GitHub Actions: Working correctly
+
+---
+
 
 **Zaid Alam – Full Stack Developer & Gen AI Engineer**

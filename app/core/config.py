@@ -39,6 +39,7 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=False,
     )
+    
 
     @property
     def DATABASE_URL(self) -> str:
@@ -51,3 +52,6 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+print("🔥 DB HOST:", settings.DB_HOST)
+print("🔥 DB URL:", settings.DATABASE_URL)
